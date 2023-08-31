@@ -195,6 +195,11 @@ defmodule Surface.Compiler.CSSTranslator do
     translate_selector(tokens, acc, state)
   end
 
+  defp translate_selector([{:text, ":s-root"} | rest], acc, state) do
+    acc = ["#{state.scope_attr_prefix}#{state.scope_id}" | acc]
+    translate_selector(rest, acc, state)
+  end
+
   # TODO: check if it's maybe better to just always add [the-prefix-self][the-prefix-xxxxxx]
   defp translate_selector([{:text, ":deep"}, {:block, "(", arg, _meta} | rest], acc, state) do
     {updated_tokens, state} = translate(arg, [], state)
